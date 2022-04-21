@@ -37,6 +37,8 @@ const renderTitle = (title) => {
   return <h2 className="text-center">{title}</h2>
 }
 
+const getGranPrixTitle = (granPrix) => granPrix['name'] + (granPrix['name'].toLowerCase().includes('gran prix') ? ' Gran Prix' : '') + ' in ' + granPrix['location']
+
 const getUTC = (date = new Date()) => Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds())
 
 const getUTCString = (date) =>
@@ -68,11 +70,8 @@ const getLocalString = (date) => {
 const SessionCountdownTimers = () => {
   const [status, setStatus] = useState('')
   const [granPrixes, setGranPrixes] = useState([])
-  const countdownEndTime = useRef(new Date())
+  const [countdownEndTime, setCountdownEndTime] = useState(new Date())
   const granPrix = useRef('')
-
-  const [, updateState] = React.useState()
-  const forceUpdate = React.useCallback(() => updateState({}), [])
 
   const today = new Date(),
     racesURL = 'https://raw.githubusercontent.com/sportstimes/f1/main/_db/f1/' + today.getFullYear().toString() + '.json'
@@ -93,7 +92,7 @@ const SessionCountdownTimers = () => {
         granPrix.current = granPrixes['races'].find((race) => new Date(race['sessions']['gp']).getTime() > today)
 
         if (granPrix.current !== undefined) {
-          countdownEndTime.current = new Date(granPrix.current['sessions']['gp'])
+          setCountdownEndTime(new Date(granPrix.current['sessions']['gp']))
           setStatus('Success')
         } else setStatus('No races')
       }
@@ -101,24 +100,26 @@ const SessionCountdownTimers = () => {
   }, [status])
 
   const sessionButtonHandler = (event, sessionName) => {
-    countdownEndTime.current = new Date(granPrix.current['sessions'][sessionName])
+    setCountdownEndTime(new Date(granPrix.current['sessions'][sessionName]))
 
     Array.from(document.querySelectorAll('.pure-button.active')).forEach((el) => el.classList.remove('active'))
     event.target.classList.add('active')
-
-    forceUpdate()
   }
 
   return (
     <>
       {status === 'Success' && [
         <>
-          {renderTitle(granPrix.current['name'])}
+          {renderTitle(getGranPrixTitle(granPrix.current))}
           <div className="text-center" style={{ whiteSpace: 'break-spaces' }}>
             {status === 'Success' && [
               Object.keys(granPrix.current['sessions']).map((key, index) => (
                 <>
-                  <button onClick={(e) => sessionButtonHandler(e, key)} className={'pure-button' + (key === 'gp' ? ' active' : '')} style={{ textTransform: 'uppercase', marginBottom: '1em' }}>
+                  <button
+                    onClick={(e) => sessionButtonHandler(e, key)}
+                    className={'pure-button' + (key === 'gp' ? ' active' : '')}
+                    style={{ fontSize: '1.1em', textTransform: 'uppercase', marginBottom: '1em' }}
+                  >
                     {key}
                   </button>
                   &nbsp;
@@ -126,7 +127,7 @@ const SessionCountdownTimers = () => {
               )),
             ]}
           </div>
-          {[<CountdownTimer startTime={getUTC()} endTime={countdownEndTime.current} utcString={getUTCString(countdownEndTime.current)} localString={getLocalString(countdownEndTime.current)} />]}
+          {countdownEndTime && [<CountdownTimer startTime={getUTC()} endTime={countdownEndTime} utcString={getUTCString(countdownEndTime)} localString={getLocalString(countdownEndTime)} />]}
         </>,
       ]}
       {status === 'No races' && renderTitle("It's offseason 😥")}
