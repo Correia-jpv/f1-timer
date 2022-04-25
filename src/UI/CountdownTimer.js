@@ -56,7 +56,7 @@ const RenderCountdown = (startTime, endTime) => {
       {remainingTime && (
         <div className="pure-g text-center center pb-2">
           <div className={'timer-wrapper pure-u-1 pure-u-sm-1-2 pure-u-lg-1-4' + (days <= 1 ? ' invisible' : '')}>
-            <CountdownCircleTimer {...timerProps} key={remainingTime} colors={['red']} initialRemainingTime={remainingTime} duration={daysDuration}>
+            <CountdownCircleTimer {...timerProps} key={remainingTime} colors={['#e10600']} initialRemainingTime={remainingTime} duration={daysDuration}>
               {({ elapsedTime, color }) => <span style={{ color, fontSize: '0.8em' }}>{renderTime('days', getTimeDays(daysDuration - elapsedTime))}</span>}
             </CountdownCircleTimer>
           </div>
@@ -65,7 +65,7 @@ const RenderCountdown = (startTime, endTime) => {
             <CountdownCircleTimer
               {...timerProps}
               key={remainingTime}
-              colors={['yellow']}
+              colors={['#FFFD19']}
               initialRemainingTime={remainingTime % daySeconds}
               duration={daySeconds}
               onComplete={(totalElapsedTime) => ({
@@ -80,7 +80,7 @@ const RenderCountdown = (startTime, endTime) => {
             <CountdownCircleTimer
               {...timerProps}
               key={remainingTime}
-              colors={['white']}
+              colors={['#FFF']}
               initialRemainingTime={remainingTime % hourSeconds}
               duration={hourSeconds}
               onComplete={(totalElapsedTime) => ({
@@ -95,7 +95,7 @@ const RenderCountdown = (startTime, endTime) => {
             <CountdownCircleTimer
               {...timerProps}
               key={remainingTime}
-              colors={['green']}
+              colors={['#3BCD2A']}
               initialRemainingTime={remainingTime % minuteSeconds}
               duration={minuteSeconds}
               onComplete={(totalElapsedTime) => ({
