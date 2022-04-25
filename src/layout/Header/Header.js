@@ -1,4 +1,6 @@
-export default function Footer(props) {
+import './Header.css'
+
+export default function Header(props) {
   return (
     <header className="header">
       <div className="home-menu pure-menu pure-menu-horizontal">

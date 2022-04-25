@@ -1,3 +1,5 @@
+import './Footer.css'
+
 export default function Footer() {
   function importAll(r) {
     let images = []
@@ -6,7 +8,7 @@ export default function Footer() {
     })
     return images
   }
-  const images = importAll(require.context('../assets/images/FooterBackgrounds', false, /\.(png|jpe?g|svg)$/))
+  const images = importAll(require.context('../../assets/images/FooterBackgrounds', false, /\.(png|jpe?g|svg)$/))
 
   return (
     <footer className="text-center">

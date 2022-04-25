@@ -1,17 +1,11 @@
 import React, { lazy, Suspense } from 'react'
-import Footer from './UI/Footer'
-import Header from './UI/Header'
+import Footer from './layout/Footer/Footer'
+import Header from './layout/Header/Header'
 import logo from './assets/images/logo-horizontal.png'
 import './styles/App.css'
 import { SpinnerCircular } from 'spinners-react'
 
-const SessionCountdownTimers = lazy(() => import('./UI/SessionCountdownTimer'))
-
-// const SessionCountdownTimers = lazy(() => {
-// 	return new Promise(resolve => {
-// 		setTimeout(() => resolve(import("./UI/SessionCountdownTimer")), 3000000);
-// 	});
-// });
+const SessionCountdownTimers = lazy(() => import('./components/SessionCountdownTimer'))
 
 const App = () => {
   return [
